@@ -42,4 +42,7 @@ app.*.symbols
 app.*.map.json
 
 #publspec.lock
-.pubspec.lock
+pubspec.lock
+
+#env
+lib/env.dart
