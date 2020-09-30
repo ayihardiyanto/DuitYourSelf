@@ -102,3 +102,5 @@ class LoginFailed extends LoginState {}
 class LoginLoading extends LoginState {}
 
 class LoginSuccess extends LoginState {}
+
+class ToSignUp extends LoginState{}

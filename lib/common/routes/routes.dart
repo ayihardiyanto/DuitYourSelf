@@ -5,6 +5,7 @@ class Routes {
   static const String homeScreen ='/home';
   static const String welcomeScreen ='/welcome';
   static const String uploadFileScreen = '/uploadFileScreen';
+  static const String signUp = '/signUp';
 
   static const String dummyAScreen = '/dummy-a';
   static const String dummyBScreen = '/dummy-b';

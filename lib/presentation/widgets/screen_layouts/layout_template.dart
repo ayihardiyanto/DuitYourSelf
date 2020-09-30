@@ -30,29 +30,22 @@ class LayoutTemplate extends StatelessWidget {
             // SideBarMenu(),
             Row(
               children: [
-                if (sizingInformation.deviceScreenType !=
-                    DeviceScreenType.mobile)
+                // if (sizingInformation.deviceScreenType !=
+                //     DeviceScreenType.mobile)
                   // SideBarMenu(),
-                  Expanded(
-                    child: Container(
+                  // Expanded(
+                    // child:
+                     Container(
                         margin: EdgeInsets.only(top: 50),
                         padding: EdgeInsets.only(
                             top: 20.0, right: 20, left: 20, bottom: 10),
                         child: child),
-                  ),
+                  // ),
               ],
             ),
           ],
         ),
-        body: Container(
-          alignment: Alignment.center,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 1920),
-            child: Stack(
-              children: <Widget>[],
-            ),
-          ),
-        ),
+        body: Container(),
       ),
     );
   }

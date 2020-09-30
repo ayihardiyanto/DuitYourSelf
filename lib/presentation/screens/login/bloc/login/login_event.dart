@@ -25,3 +25,5 @@ class LoginWithGooglePressed extends LoginEvent {
         password,
       ];
 }
+
+class SignUp extends LoginEvent {}

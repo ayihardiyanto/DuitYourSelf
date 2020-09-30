@@ -22,6 +22,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield* _mapLoginWithGooglePressedToState(
           event.isGoogleSignIn, event.email, event.password);
     }
+    if (event is SignUp) {
+      try {
+        yield ToSignUp();
+      } catch (_) {}
+    }
   }
 
   Stream<LoginState> _mapLoginWithGooglePressedToState(

@@ -1,8 +1,14 @@
 import 'dart:async';
 
+import 'package:duit_yourself/common/config/injector.dart';
+import 'package:duit_yourself/common/routes/routes.dart';
+import 'package:duit_yourself/main_route.dart';
+import 'package:duit_yourself/presentation/screens/sign_up/sign_up_screen.dart';
 import 'package:duit_yourself/presentation/widgets/custom_button_widget/custom_flat_button.dart';
 import 'package:duit_yourself/presentation/widgets/custom_text_form_field/textfield_duit.dart';
+import 'package:duit_yourself/presentation/widgets/screen_layouts/menu/bloc/menu_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:duit_yourself/presentation/screens/login/bloc/authentication/authentication_bloc.dart';
@@ -97,18 +103,24 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
           Navigator.pop(context);
           BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
         }
+
         if (state is LoginLoading) {
           showDialog(
               context: context,
               barrierDismissible: true,
               builder: (BuildContext context) {
-                return Center(child: CircularProgressIndicator(),);
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
               });
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
           bloc: loginBloc,
           builder: (BuildContext context, LoginState state) {
+            if (state is ToSignUp) {
+              return SignUpScreen();
+            }
             return Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
@@ -141,6 +153,35 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                           ),
                     ),
                   ),
+                  Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.black26,
+                  ),
+                  Positioned(
+                    top: MediaQuery.of(context).size.height / 2,
+                    left: MediaQuery.of(context).size.width / 8,
+                    child: Column(
+                      children: [
+                        Text(
+                          LoginStrings.duitYourSelf,
+                          style: PxText.popUpTitle
+                              .copyWith(color: Yellow.sunYellow, fontSize: 36),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                          width: 450,
+                          child: Text(
+                            LoginStrings.contentText,
+                            style: PxText.contentText.copyWith(fontSize: 25),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Align(
                     alignment: Alignment.centerRight,
                     child: Container(
@@ -155,20 +196,37 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               SizedBox(height: 40),
-                              Text(LoginStrings.duitYourSelf,
+                              Text('Login to Your Account',
                                   style: PxText.popUpTitle.copyWith(
-                                      color: Yellow.sunYellow, fontSize: 36)),
+                                      color: Yellow.sunYellow, fontSize: 20)),
                               SizedBox(
                                 height: 5,
                               ),
                               Container(
-                                width: 213,
+                                // width: 213,
                                 height: 38,
-                                child: Text(
-                                  LoginStrings.contentText,
-                                  style: PxText.contentText,
-                                  textAlign: TextAlign.center,
-                                ),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Don\'t have an account?',
+                                        style: PxText.contentText,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          loginBloc.add(SignUp());
+                                        },
+                                        child: MouseRegion(
+                                          cursor: SystemMouseCursors.click,
+                                          child: Text(
+                                            ' Sign Up for Free!',
+                                            style: PxText.contentText.copyWith(
+                                                color: Blue.lightBlue),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      )
+                                    ]),
                               ),
                               TextFieldDuit(
                                 hintText: 'Email',

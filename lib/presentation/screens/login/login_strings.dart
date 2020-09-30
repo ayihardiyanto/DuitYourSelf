@@ -1,6 +1,6 @@
 class LoginStrings {
   static const String stateFailure = 'State is failure';
-  static const duitYourSelf = 'Duit Yourself!';
+  static const duitYourSelf = 'DuitYourself';
   static const contentText = 'Find out some cool stuff while searching your preferred jobs!';
   static const buttonText = 'Login with Google';
   static const buttonIcon = 'images/icon_google.png';

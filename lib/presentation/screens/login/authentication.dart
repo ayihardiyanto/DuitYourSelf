@@ -1,4 +1,3 @@
-import 'package:duit_yourself/presentation/themes/color_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +8,6 @@ import 'package:simple_cache/simple_cache.dart';
 import '../../../common/config/injector.dart';
 import 'bloc/authentication/authentication_bloc.dart';
 import 'login_screen.dart';
-import 'validator/show_dialog.dart';
 
 class Authentications extends StatefulWidget {
   Authentications({Key key}) : super(key: key);

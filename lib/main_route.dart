@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MainRoute extends StatelessWidget {
-  const MainRoute({Key key}) : super(key: key);
+  final String initialRoute;
+  const MainRoute({Key key, this.initialRoute}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class MainRoute extends StatelessWidget {
       ),
       navigatorKey: locator<NavigationService>().navigatorKey,
       onGenerateRoute: RouteGenerator.generateRoute,
-      initialRoute: Routes.welcomeScreen,
+      initialRoute: initialRoute ?? Routes.welcomeScreen,
     );
   }
 }
