@@ -27,3 +27,17 @@ class LoginWithGooglePressed extends LoginEvent {
 }
 
 class SignUp extends LoginEvent {}
+
+class OnSubmitSignUp extends LoginEvent {
+  final String email;
+  final String password;
+
+  OnSubmitSignUp({this.email, this.password});
+
+  @override
+  List<Object> get props => [
+        email,
+        password,
+      ];
+
+}

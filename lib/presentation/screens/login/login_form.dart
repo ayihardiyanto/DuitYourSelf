@@ -1,12 +1,7 @@
 import 'dart:async';
-
-import 'package:duit_yourself/common/config/injector.dart';
-import 'package:duit_yourself/common/routes/routes.dart';
-import 'package:duit_yourself/main_route.dart';
-import 'package:duit_yourself/presentation/screens/sign_up/sign_up_screen.dart';
+import 'package:duit_yourself/presentation/screens/sign_up/sign_up_dialog.dart';
 import 'package:duit_yourself/presentation/widgets/custom_button_widget/custom_flat_button.dart';
 import 'package:duit_yourself/presentation/widgets/custom_text_form_field/textfield_duit.dart';
-import 'package:duit_yourself/presentation/widgets/screen_layouts/menu/bloc/menu_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -114,13 +109,14 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                 );
               });
         }
+
+        if (state is ToSignUp) {
+          SignUpDialog().showSlideDialog(context: context, loginBloc: loginBloc);
+        }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
           bloc: loginBloc,
           builder: (BuildContext context, LoginState state) {
-            if (state is ToSignUp) {
-              return SignUpScreen();
-            }
             return Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
@@ -258,7 +254,7 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                               ),
                               if (isFailedLogin)
                                 Container(
-                                  width: 270,
+                                  margin: EdgeInsets.symmetric(horizontal: 50),
                                   child: FittedBox(
                                     fit: BoxFit.cover,
                                     child: Text(
@@ -270,7 +266,6 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                               CustomFlatButton(
                                   buttonTitle: 'Sign In',
                                   buttonColor: Blue.darkBlue,
-                                  width: 278,
                                   onPressed: () {
                                     BlocProvider.of<LoginBloc>(context).add(
                                       LoginWithGooglePressed(
@@ -280,7 +275,7 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                                     );
                                   }),
                               CustomFlatButton(
-                                width: 243,
+                                marginTop: 10,
                                 leadingIcon: Image.asset(
                                   LoginStrings.google,
                                   height: 15,
@@ -291,7 +286,7 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                                 buttonTitle: 'Sign in With Google',
                                 buttonStyle: CustomButtonStyle.STYLE_TWO,
                                 onPressed: () {
-                                  BlocProvider.of<LoginBloc>(context).add(
+                                  loginBloc.add(
                                     LoginWithGooglePressed(
                                         isGoogleSignIn: true),
                                   );

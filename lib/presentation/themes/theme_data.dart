@@ -6,21 +6,21 @@ ThemeData pxAppTheme = ThemeData(
   backgroundColor: Yellow.sunYellow,
   primaryColor: White.white,
   accentColor: Yellow.sunYellow,
-  buttonColor: Purple.barneyPurple,
+  buttonColor: Blue.darkBlue,
   inputDecorationTheme: InputDecorationTheme(
     isDense: true,
-    border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+    border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: White.white)),
     fillColor: White.white,
     focusColor: White.white,
     contentPadding: EdgeInsets.all(10),
     filled: true,
   ),
-  buttonTheme: ButtonThemeData(
-    //update and enhance in screens where necessary
-    buttonColor: Purple.barneyPurple,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10.0),
-    ),
-  ),
+  // buttonTheme: ButtonThemeData(
+  //   //update and enhance in screens where necessary
+  //   buttonColor: Purple.barneyPurple,
+  //   shape: RoundedRectangleBorder(
+  //     borderRadius: BorderRadius.circular(10.0),
+  //   ),
+  // ),
   toggleableActiveColor: Purple.royalPurple,
 );

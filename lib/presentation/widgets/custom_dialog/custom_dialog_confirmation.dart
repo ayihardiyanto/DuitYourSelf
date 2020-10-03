@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:duit_yourself/presentation/themes/color_theme.dart';
-import 'package:duit_yourself/presentation/widgets/custom_button_widget/confirmation_button.dart';
 
 class CustomDialogConfirmation {
   GestureTapCallback onTap;
@@ -69,12 +68,12 @@ class CustomDialogConfirmation {
                             color: Purple.barneyPurple),
                         padding: EdgeInsets.symmetric(
                             vertical: 1.5, horizontal: 1.5),
-                        child: ConfirmButtonWidget(
-                          confirmText: 'Cancel',
-                          onPressed: () {
-//                          Navigator.pop(context);
-                          },
-                        ),
+//                         child: ConfirmButtonWidget(
+//                           confirmText: 'Cancel',
+//                           onPressed: () {
+// //                          Navigator.pop(context);
+                        //   },
+                        // ),
                       ),
                       Container(
                         width: 150,
@@ -84,12 +83,12 @@ class CustomDialogConfirmation {
                             color: Purple.barneyPurple),
                         padding: EdgeInsets.symmetric(
                             vertical: 1.5, horizontal: 1.5),
-                        child: ConfirmButtonWidget(
-                          confirmText: 'Yes',
-                          onPressed: onTap,
-                          buttonColor: Purple.barneyPurple,
-                          textColor: White.white,
-                        ),
+                        // child: ConfirmButtonWidget(
+                        //   confirmText: 'Yes',
+                        //   onPressed: onTap,
+                        //   buttonColor: Purple.barneyPurple,
+                        //   textColor: White.white,
+                        // ),
                       ),
                     ],
                   )

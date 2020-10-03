@@ -1,20 +1,13 @@
-import 'package:duit_yourself/common/models/usecase.dart';
 import 'package:injectable/injectable.dart';
 import 'package:duit_yourself/data/models/user_model.dart';
-import 'package:duit_yourself/domain/entities/user_entity.dart';
 import 'package:duit_yourself/domain/repositories/user_repository.dart';
 
 @injectable
 @lazySingleton
-class UserUsecase implements UseCase<UserEntity, Map<String, String>> {
+class UserUsecase {
   final UserRepository userRepository;
 
   UserUsecase(this.userRepository);
-
-  @override
-  Future<UserEntity> call(Map payload) {
-    return null;
-  }
 
   Future<bool> isSignedIn() {
     return userRepository.isSignedIn();
@@ -25,7 +18,14 @@ class UserUsecase implements UseCase<UserEntity, Map<String, String>> {
   }
 
   Future<User> signIn({bool isGoogle, String email, String password}) {
-    return userRepository.signIn(isGoogle: isGoogle, email: email, password:password);
+    return userRepository.signIn(
+        isGoogle: isGoogle, email: email, password: password);
+  }
+
+  Future<String> signUp({String email, String password}) async {
+    final result =
+        await userRepository.signUp(email: email, password: password);
+    return result;
   }
 
   Future<String> getRoles() {
@@ -43,5 +43,4 @@ class UserUsecase implements UseCase<UserEntity, Map<String, String>> {
   Future<bool> signInCheck() {
     return userRepository.signInCheck();
   }
-
 }

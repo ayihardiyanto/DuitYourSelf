@@ -12,4 +12,5 @@ abstract class UserRepository {
   Future saveToLocalStorage(String key, String value);
   Future getFromLocalStorage(String key); 
   Future<bool> signInCheck();
+  Future<String> signUp({String email, String password});
 }

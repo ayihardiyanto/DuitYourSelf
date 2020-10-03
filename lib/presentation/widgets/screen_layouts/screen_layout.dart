@@ -3,7 +3,7 @@ import 'package:duit_yourself/common/constants/common_constants.dart';
 import 'package:duit_yourself/presentation/themes/color_theme.dart';
 import 'package:duit_yourself/presentation/themes/px_text.dart';
 import 'package:duit_yourself/presentation/widgets/back_button.dart';
-import 'package:duit_yourself/presentation/widgets/custom_button_widget/action_loading_flat_button.dart';
+// import 'package:duit_yourself/presentation/widgets/custom_button_widget/action_loading_flat_button.dart';
 
 class ScreenLayout extends StatelessWidget {
   final Widget child;
@@ -120,12 +120,13 @@ class ScreenLayout extends StatelessWidget {
             height: 50,
             padding: EdgeInsets.only(bottom: 10),
             child: Center(
-                child: ActionLoadingFlatButton(
-              loadingText: loadingText,
-              buttonTitle: buttonText ?? CommonConstants.continueButton,
-              buttonColor: buttonColor ?? Purple.barneyPurple,
-              onPressed: onPressed,
-            )),
+            //     child: ActionLoadingFlatButton(
+            //   loadingText: loadingText,
+            //   buttonTitle: buttonText ?? CommonConstants.continueButton,
+            //   buttonColor: buttonColor ?? Purple.barneyPurple,
+            //   onPressed: onPressed,
+            // )
+            ),
           ),
         )
     ]);

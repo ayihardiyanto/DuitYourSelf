@@ -1,8 +1,9 @@
+import 'package:duit_yourself/common/routes/routes.dart';
+import 'package:duit_yourself/presentation/screens/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:duit_yourself/common/constants/key_cache_constant.dart';
-import 'package:duit_yourself/main_route.dart';
 import 'package:duit_yourself/presentation/widgets/screen_layouts/menu/bloc/menu_bloc.dart';
 import 'package:simple_cache/simple_cache.dart';
 import '../../../common/config/injector.dart';
@@ -68,10 +69,9 @@ class _AuthenticationState extends State<Authentications> {
       },
       child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
-          // if (state is Authenticated) {
-
-          //  MaterialPageRoute(builder: (_)=>MaterialApp(home: Container(color: Blue.darkBlue, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height,),));
-          // }
+          if (state is Authenticated) {
+            Navigator.pushNamed(context, Routes.welcomeScreen);
+          }
         },
         builder: (BuildContext context, AuthenticationState state) {
           if (state is Unauthorized) {
@@ -82,12 +82,6 @@ class _AuthenticationState extends State<Authentications> {
               return Center(child: CircularProgressIndicator());
             }
             return LoginScreen();
-          }
-          if (state is Authenticated) {
-            return BlocProvider<MenuBloc>(
-              create: (BuildContext context) => getIt<MenuBloc>(),
-              child: MainRoute(),
-            );
           }
           return Center(
             child: CircularProgressIndicator(),

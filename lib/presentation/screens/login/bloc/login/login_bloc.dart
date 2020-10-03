@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:duit_yourself/domain/usecases/user_usecase.dart';
 import 'package:injectable/injectable.dart';
@@ -27,11 +29,26 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield ToSignUp();
       } catch (_) {}
     }
+
+    if (event is OnSubmitSignUp) {
+      yield SigningUp();
+      print(event.email);
+      print(event.password);
+      final result = await userUsecase.signUp(
+          email: event.email, password: event.password);
+
+      final statusCode = jsonDecode(result)['statusCode'];
+      if (statusCode == '201') {
+        yield SignUpSuccess();
+      }
+    }
   }
 
   Stream<LoginState> _mapLoginWithGooglePressedToState(
       bool isGoogleSignIn, String email, String password) async* {
-    yield LoginLoading();
+    if (!isGoogleSignIn) {
+      yield LoginLoading();
+    }
     try {
       await userUsecase.signOut();
       await userUsecase.signIn(

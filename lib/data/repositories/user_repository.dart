@@ -9,6 +9,7 @@ import 'package:duit_yourself/common/constants/key_local_storage_constants.dart'
 import 'package:duit_yourself/domain/repositories/user_repository.dart';
 import '../models/user_model.dart';
 import 'package:simple_cache/simple_cache.dart';
+import 'package:http/http.dart' as http;
 
 @LazySingleton(as: UserRepository)
 class UserRepositoryImpl implements UserRepository {
@@ -20,6 +21,9 @@ class UserRepositoryImpl implements UserRepository {
       GoogleSignIn(clientId: CommonConstants.googleSignInClientId);
   SimpleCache simpleCache;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  String _baseUrl = 'http://localhost:3210';
+  http.Client httpClient = http.Client();
 
   Future saveCacheData(String user) async {
     simpleCache = await SimpleCache.getInstance();
@@ -162,5 +166,14 @@ class UserRepositoryImpl implements UserRepository {
     var key = KeyLocalStorageConstants.photo;
     await saveToLocalStorage(key, currentPhoto);
     return currentPhoto;
+  }
+
+  @override
+  Future<String> signUp({String email, String password}) async {
+    final result = await http.post('$_baseUrl/create-user', body: {
+      'email': email,
+      'password': password,
+    },);
+    return result.body;
   }
 }

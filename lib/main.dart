@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:duit_yourself/common/routes/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:duit_yourself/common/config/injector.dart';
 import 'package:duit_yourself/common/config/locator.dart';
@@ -10,6 +11,7 @@ void main() async {
   BlocSupervisor.delegate = SimpleBlogDelegate();
   // Setup injections & Logger here
   await setupInjections();
+  RouteGenerator.setupRouter();
   setupLocator();
   app.main();
 }
