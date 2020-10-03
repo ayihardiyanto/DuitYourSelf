@@ -1,12 +1,9 @@
 import 'package:duit_yourself/common/routes/routes.dart';
-import 'package:duit_yourself/presentation/screens/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:duit_yourself/common/constants/key_cache_constant.dart';
-import 'package:duit_yourself/presentation/widgets/screen_layouts/menu/bloc/menu_bloc.dart';
 import 'package:simple_cache/simple_cache.dart';
-import '../../../common/config/injector.dart';
 import 'bloc/authentication/authentication_bloc.dart';
 import 'login_screen.dart';
 
@@ -62,10 +59,7 @@ class _AuthenticationState extends State<Authentications> {
     return BlocListener(
       bloc: authenticationBloc,
       listener: (BuildContext context, AuthenticationState state) {
-        // if (state is Unauthorized) {
-        //   authenticationBloc.add(LoginDenied());
-        //   showDialogAlert(context);
-        // }
+       
       },
       child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {

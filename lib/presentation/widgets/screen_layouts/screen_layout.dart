@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:duit_yourself/common/constants/common_constants.dart';
 import 'package:duit_yourself/presentation/themes/color_theme.dart';
 import 'package:duit_yourself/presentation/themes/px_text.dart';
 import 'package:duit_yourself/presentation/widgets/back_button.dart';
