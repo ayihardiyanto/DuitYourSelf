@@ -7,6 +7,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../presentation/screens/dashboard/bloc/app_bar_bloc/app_bar_bloc.dart';
 import '../../presentation/screens/login/bloc/authentication/authentication_bloc.dart';
 import '../network/cloud_function.dart';
 import '../../presentation/screens/login/bloc/login/login_bloc.dart';
@@ -29,6 +30,7 @@ GetIt $initGetIt(
   gh.factory<MenuBloc>(() => MenuBloc(getMenuRolesUsecase: get<Menu>()));
   gh.lazySingleton<UserRepository>(() => UserRepositoryImpl());
   gh.factory<UserUsecase>(() => UserUsecase(get<UserRepository>()));
+  gh.factory<AppBarBloc>(() => AppBarBloc(userUsecase: get<UserUsecase>()));
   gh.factory<AuthenticationBloc>(() => AuthenticationBloc(get<UserUsecase>()));
   gh.factory<LoginBloc>(() => LoginBloc(get<UserUsecase>()));
   return get;

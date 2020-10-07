@@ -1,6 +1,7 @@
 import 'package:duit_yourself/common/config/injector.dart';
 import 'package:duit_yourself/common/errors/error_screen.dart';
 import 'package:duit_yourself/common/routes/routes.dart';
+import 'package:duit_yourself/presentation/screens/dashboard/bloc/app_bar_bloc/app_bar_bloc.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/dashboard.dart';
 import 'package:duit_yourself/presentation/screens/login/authentication.dart';
 import 'package:duit_yourself/presentation/screens/login/bloc/authentication/authentication_bloc.dart';
@@ -41,10 +42,17 @@ class RouteGenerator {
     final name = parameters['displayName'][0];
     final imageUrl = parameters['imageUrl'][0];
     print('$parameters , $name and ${imageUrl.isEmpty}');
-    return Dashboard(
-      imageUrl: imageUrl,
-      username: name,
-      isInitialUser: imageUrl.trim().isEmpty,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<AppBarBloc>(),
+        )
+      ],
+      child: Dashboard(
+        imageUrl: imageUrl,
+        username: name,
+        isInitialUser: imageUrl.trim().isEmpty,
+      ),
     );
   });
 }

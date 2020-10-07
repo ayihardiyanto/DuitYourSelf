@@ -138,7 +138,8 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
           }
         }
         if (state is LoginSuccess) {
-          Navigator.pop(context);
+          // Navigator.pop(context);
+          imageFader.cancel();
           BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
         }
 
