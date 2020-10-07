@@ -9,12 +9,16 @@ class TextFieldDuit extends StatelessWidget {
   final bool obscureText;
   final bool isPassword;
   final dynamic suffixIcon;
-  final Icon prefixIcon;
+  final dynamic prefixIcon;
   final FocusNode focusNode;
-  final AutovalidateMode autoValidate;
+  final bool autoValidate;
   final Function validator;
   final Function onChange;
   final bool enabled;
+  final InputDecoration decoration;
+  final Color fillColor;
+  final Color borderColor;
+  final Color focusedBorderColor;
 
   const TextFieldDuit({
     Key key,
@@ -30,6 +34,10 @@ class TextFieldDuit extends StatelessWidget {
     this.validator,
     this.onChange,
     this.enabled,
+    this.decoration,
+    this.fillColor,
+    this.borderColor,
+    this.focusedBorderColor,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -37,24 +45,34 @@ class TextFieldDuit extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
       child: TextFormField(
         enabled: enabled ?? true,
-        decoration: InputDecoration(
-          hintText: hintText,
-          labelText: labelText,
-          suffixIcon: suffixIcon,
-          prefixIcon: prefixIcon,
-          labelStyle: PxText.contentText
-              .copyWith(color: enabled ?? false ? Black.black : Grey.ashGrey),
-          filled: true,
-          disabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Grey.ashGrey),
-          ),
-          fillColor: enabled == true || enabled == null
-              ? Colors.white
-              : Grey.brightGrey,
-          alignLabelWithHint: true,
-        ),
+        decoration: decoration ??
+            InputDecoration(
+              hintText: hintText,
+              labelText: labelText,
+              suffixIcon: suffixIcon,
+              prefixIcon: prefixIcon,
+              labelStyle: PxText.contentText.copyWith(
+                  color: enabled ?? false ? Black.black : Grey.ashGrey),
+              filled: true,
+              disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: borderColor ?? Grey.ashGrey),
+              ),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: borderColor ?? Grey.ashGrey),
+              ),
+              hintStyle: TextStyle(color: Grey.greyedText),
+              focusedBorder: OutlineInputBorder(
+                borderSide:
+                    BorderSide(color: focusedBorderColor ?? Grey.ashGrey),
+              ),
+              fillColor: fillColor ??
+                  (enabled == true || enabled == null
+                      ? Colors.white
+                      : Grey.brightGrey),
+              alignLabelWithHint: true,
+            ),
         focusNode: focusNode,
-        autovalidateMode: autoValidate ?? AutovalidateMode.disabled,
+        autovalidate: autoValidate ?? true,
         obscureText: obscureText ?? false,
         controller: controller,
         validator: validator,

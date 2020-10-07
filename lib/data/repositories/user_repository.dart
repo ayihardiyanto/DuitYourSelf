@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as _firebase;
 import 'package:google_sign_in/google_sign_in.dart';
@@ -35,9 +37,8 @@ class UserRepositoryImpl implements UserRepository {
       return null;
     }
     return User(
-      uid: user.uid,
       email: user.email,
-      displayName: user.displayName,
+      name: user.displayName,
       photoUrl: user.photoURL,
     );
   }
@@ -76,6 +77,7 @@ class UserRepositoryImpl implements UserRepository {
     } catch (_) {
       print(_);
     }
+    await saveToLocalStorage('email', authResult.user.email);
     return _userFromFirebase(authResult.user);
   }
 
@@ -123,36 +125,38 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<String> getRoles() async {
+  Future<String> getData() async {
     try {
-      String role;
-      var user = await currentUser();
-      final currentEmail = user.email;
-      var a = firestore.app.name;
-      print('oke fire $a');
-      var collectionReference = firestore.collection('user');
-      return collectionReference
-          .where('platform', isEqualTo: true)
-          .where('email', arrayContains: currentEmail)
+      var result;
+      // = await http.post(
+      //   '$_baseUrl/get-user-by-email',
+      //   body: {'email': storage.getItem('email')},
+      // );
+
+      await firestore
+          .collection('user')
+          .doc(storage.getItem('email'))
           .get()
-          .then((value) async {
-        // ignore: avoid_function_literals_in_foreach_calls
-        value.docs.forEach((element) {
-          role = element.id;
-        });
-        var key = KeyLocalStorageConstants.role;
-        await saveToLocalStorage(key, role);
-        return role;
+          .then((value) {
+        if (value.exists) {
+          print(value.data());
+          print(value.data().runtimeType);
+          result = value.data();
+        }
       });
+      String username = result['name'];
+      var key = KeyLocalStorageConstants.username;
+      await saveToLocalStorage(key, username);
+      return jsonEncode(result);
     } catch (error) {
-      throw 'unauthorized';
+      throw 'error : $error';
     }
   }
 
   @override
   Future<String> getUser() async {
     var user = await currentUser();
-    final currentName = user.displayName;
+    final currentName = user.name;
     var key = KeyLocalStorageConstants.username;
     await saveToLocalStorage(key, currentName);
     await saveCacheData(currentName);
@@ -170,10 +174,13 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<String> signUp({String email, String password}) async {
-    final result = await http.post('$_baseUrl/create-user', body: {
-      'email': email,
-      'password': password,
-    },);
+    final result = await http.post(
+      '$_baseUrl/create-user',
+      body: {
+        'email': email,
+        'password': password,
+      },
+    );
     return result.body;
   }
 }

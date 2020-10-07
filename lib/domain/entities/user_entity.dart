@@ -2,31 +2,27 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 class UserEntity extends Equatable {
-  final String uid;
   final String email;
-  final String displayName;
+  final String name;
   final String photoUrl;
 
   UserEntity({
-    @required this.uid,
     @required this.email,
-    @required this.displayName,
+    @required this.name,
     @required this.photoUrl,
   });
 
   @override
-  List<Object> get props => [uid, email, displayName, photoUrl];
+  List<Object> get props => [ email, name, photoUrl];
 
   UserEntity copyWith({
-    String uid,
     String email,
-    String displayName,
+    String name,
     String photoUrl,
   }) =>
       UserEntity(
-        uid: uid ?? this.uid,
         email: email ?? this.email,
-        displayName: displayName ?? this.displayName,
+        name: name ?? this.name,
         photoUrl: photoUrl ?? this.photoUrl,
       );
 }

@@ -88,7 +88,7 @@ class CustomTextField extends StatelessWidget {
         child: TextFormField(
           inputFormatters: textInputFormatter ?? [],
           onChanged: onChange,
-          autovalidateMode: AutovalidateMode.always,
+          autovalidate: true,
           controller: controller,
           keyboardType: textInputType,
           cursorColor: primaryColor,

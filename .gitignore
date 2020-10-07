@@ -46,3 +46,5 @@ pubspec.lock
 
 #env
 lib/env.dart
+
+flutter

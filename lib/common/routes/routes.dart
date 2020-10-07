@@ -6,10 +6,7 @@ class Routes {
   static const String welcomeScreen ='/welcome';
   static const String uploadFileScreen = '/uploadFileScreen';
   static const String signUp = '/signUp';
-
-  static const String dummyAScreen = '/dummy-a';
-  static const String dummyBScreen = '/dummy-b';
-  static const String dummyCScreen = '/dummy-c';
+  static const String dashboard = '/dashboard';
 
   static const String meetingTask = '/meeting-task';
   static const String engagement = '/engagement-task';

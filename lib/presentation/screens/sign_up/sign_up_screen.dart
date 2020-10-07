@@ -86,11 +86,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           horizontal: windowWidth * 0.05,
                           vertical: windowHeight * 0.02),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                  'By clicking Sign Up, you agree to our Terms, and Data Policy.')),
+                                    'By clicking Sign Up, you agree to our Terms, and Data Policy.', maxLines: 2, style: TextStyle(fontSize: 10),),
+                            ),
+                          ),
                           Expanded(
                             child: CustomFlatButton(
                                 width: windowWidth * 0.4,
@@ -144,7 +148,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               horizontal: windowWidth * 0.03,
                               vertical: windowHeight * 0.03),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
                                 SignUpStrings.signUp,
@@ -165,7 +169,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 style: PxText.contentText.copyWith(
                                   color: Black.black,
                                 ),
-                                textAlign: TextAlign.justify,
+                                textAlign: TextAlign.center,
                               ),
                               Align(
                                 alignment: Alignment.bottomLeft,

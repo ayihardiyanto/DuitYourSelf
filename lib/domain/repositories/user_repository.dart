@@ -8,7 +8,7 @@ abstract class UserRepository {
   Future<bool> isSignedIn();
   Future<String> getUser();
   Future getPhoto();
-  Future<String> getRoles();
+  Future<String> getData();
   Future saveToLocalStorage(String key, String value);
   Future getFromLocalStorage(String key); 
   Future<bool> signInCheck();

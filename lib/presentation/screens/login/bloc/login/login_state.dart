@@ -96,15 +96,19 @@ class LoginState {
   }
 }
 
-class LoginFailed extends LoginState {}
+class LoginFailed extends LoginState {
+  final bool isGoogle;
 
+  LoginFailed({this.isGoogle});
+
+}
 
 class LoginLoading extends LoginState {}
 
 class LoginSuccess extends LoginState {}
 
-class ToSignUp extends LoginState{}
+class ToSignUp extends LoginState {}
 
-class SignUpSuccess extends LoginState{}
+class SignUpSuccess extends LoginState {}
 
-class SigningUp extends LoginState{}
+class SigningUp extends LoginState {}

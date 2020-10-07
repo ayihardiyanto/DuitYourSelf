@@ -58,19 +58,18 @@ class _AuthenticationState extends State<Authentications> {
     screenInit(context);
     return BlocListener(
       bloc: authenticationBloc,
-      listener: (BuildContext context, AuthenticationState state) {
-       
-      },
+      listener: (BuildContext context, AuthenticationState state) {},
       child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
           if (state is Authenticated) {
-            Navigator.pushNamed(context, Routes.welcomeScreen);
+            Navigator.pushNamed(context, '${Routes.dashboard}/${state.displayName}/${state.photo}',);
+          }
+          if (state is Unauthorized) {
+             LoginScreen();
           }
         },
         builder: (BuildContext context, AuthenticationState state) {
-          if (state is Unauthorized) {
-            return LoginScreen();
-          }
+          
           if (state is Unauthenticated) {
             if (cacheData != null) {
               return Center(child: CircularProgressIndicator());

@@ -77,7 +77,7 @@ class SignUpForm extends StatelessWidget {
                     width: 10,
                     height: 10,
                   ),
-                  autoValidate: AutovalidateMode.always,
+                  autoValidate: true,
                   validator: (text) {
                     if (!emailRegExp.hasMatch(text) &&
                         emailController.text.isNotEmpty) {
@@ -108,6 +108,8 @@ class SignUpForm extends StatelessWidget {
                 },
                 suffixIcon: passwordController.text.isNotEmpty
                     ? IconButton(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
                         icon: Icon(
                           showPass ? Icons.visibility_off : Icons.visibility,
                         ),
@@ -123,7 +125,7 @@ class SignUpForm extends StatelessWidget {
                         width: 10,
                         height: 10,
                       ),
-                autoValidate: AutovalidateMode.always,
+                autoValidate: true,
                 validator: (text) {
                   if (passwordController.text.length < 8 &&
                       passwordController.text.isNotEmpty) {
@@ -142,6 +144,8 @@ class SignUpForm extends StatelessWidget {
                   icon: Icon(
                       showConfPass ? Icons.visibility_off : Icons.visibility),
                   color: Grey.brownGrey,
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
                   onPressed: () {
                     renderTrigger(() {
                       showConfPass = !showConfPass;
@@ -160,7 +164,7 @@ class SignUpForm extends StatelessWidget {
                     }
                   });
                 },
-                autoValidate: AutovalidateMode.always,
+                autoValidate: true,
                 validator: (String text) {
                   if (text.isNotEmpty && text != passwordController.text) {
                     return 'Password doesn\'t match';

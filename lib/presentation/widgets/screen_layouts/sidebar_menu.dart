@@ -31,8 +31,6 @@ class _SideBarMenuState extends State<SideBarMenu>
 
   List<String> dummyRoutes = [
     Routes.taskCenter,
-    Routes.dummyBScreen,
-    Routes.dummyCScreen,
     Routes.moodMeterList,
   ];
   AnimationController _animationController;

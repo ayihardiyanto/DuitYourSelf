@@ -46,16 +46,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Stream<LoginState> _mapLoginWithGooglePressedToState(
       bool isGoogleSignIn, String email, String password) async* {
-    if (!isGoogleSignIn) {
+    // if (!isGoogleSignIn) {
       yield LoginLoading();
-    }
+    // }
     try {
       await userUsecase.signOut();
       await userUsecase.signIn(
           isGoogle: isGoogleSignIn, email: email, password: password);
       yield LoginSuccess();
     } catch (_) {
-      yield LoginFailed();
+      yield LoginFailed(isGoogle: isGoogleSignIn);
     }
   }
 }

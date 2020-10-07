@@ -4,23 +4,21 @@ import 'package:meta/meta.dart';
 import 'package:duit_yourself/domain/entities/user_entity.dart';
 
 class User extends UserEntity {
-  User({@required String uid, @required String email, @required String displayName, @required String photoUrl})
-      : super(uid: uid, email: email, displayName: displayName, photoUrl: photoUrl);
+  User({@required String email, @required String name, @required String photoUrl})
+      : super(email: email, name: name, photoUrl: photoUrl);
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      uid: json['uid'],
       email: json['email'],
-      displayName: json['displayName'],
+      name: json['name'],
       photoUrl: json['photoUrl'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'uid': uid,
       'email': email,
-      'displayName': displayName,
+      'name': name,
       'photoURL': photoUrl
     };
   }

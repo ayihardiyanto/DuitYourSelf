@@ -28,8 +28,13 @@ class UserUsecase {
     return result;
   }
 
-  Future<String> getRoles() {
-    return userRepository.getRoles();
+  Future<String> getData() async {
+    try {
+      return await userRepository.getData();
+    } catch (_) {
+      print(_);
+      throw (_);
+    }
   }
 
   Future<String> getUser() {

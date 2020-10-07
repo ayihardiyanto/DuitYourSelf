@@ -79,6 +79,8 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _latestImage == 3 ? _latestImage = 0 : _latestImage++;
       imageFader = Timer(Duration(milliseconds: 3000), () {
@@ -92,7 +94,48 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
       listener: (context, state) {
         if (state is LoginFailed) {
           Navigator.pop(context);
-          isFailedLogin = true;
+          if (state.isGoogle) {
+            showDialog(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                    content: Container(
+                      width: width * 0.25,
+                      height: height * 0.35,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Image.asset(
+                            LoginStrings.hazardIcon,
+                            color: Red.blush,
+                            height: height * 0.25,
+                            width: width * 0.25,
+                          ),
+                          Text(
+                            'It seem that we can\'t find you on Google',
+                            style: PxText.popUpTitle
+                                .copyWith(color: Yellow.mangoYellow),
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            'Tap Anywhere Outside Dialog to Dismiss',
+                            style: PxText.contentText.copyWith(
+                                color: Blue.darkBlue,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                });
+          } else {
+            isFailedLogin = true;
+          }
         }
         if (state is LoginSuccess) {
           Navigator.pop(context);
@@ -111,12 +154,14 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
         }
 
         if (state is ToSignUp) {
-          SignUpDialog().showSlideDialog(context: context, loginBloc: loginBloc);
+          SignUpDialog()
+              .showSlideDialog(context: context, loginBloc: loginBloc);
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
           bloc: loginBloc,
           builder: (BuildContext context, LoginState state) {
+            final width = MediaQuery.of(context).size.width;
             return Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
@@ -182,7 +227,7 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                     alignment: Alignment.centerRight,
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.4,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                       color: Colors.black87,
                       child: Stack(
                         fit: StackFit.expand,
@@ -242,6 +287,8 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                                             ? Icons.visibility_off
                                             : Icons.visibility),
                                         color: Grey.brownGrey,
+                                        splashColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
                                         onPressed: () {
                                           passwordToggler();
                                         },
@@ -263,34 +310,40 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                                     ),
                                   ),
                                 ),
-                              CustomFlatButton(
-                                  buttonTitle: 'Sign In',
-                                  buttonColor: Blue.darkBlue,
+                              Padding(
+                                padding: EdgeInsets.only(top: 8.0),
+                                child: CustomFlatButton(
+                                    buttonTitle: 'Sign In',
+                                    buttonColor: Blue.darkBlue,
+                                    onPressed: () {
+                                      BlocProvider.of<LoginBloc>(context).add(
+                                        LoginWithGooglePressed(
+                                            isGoogleSignIn: false,
+                                            email: emailController.text,
+                                            password: passwordController.text),
+                                      );
+                                    }),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 8.0),
+                                child: CustomFlatButton(
+                                  marginTop: 10,
+                                  leadingIcon: Image.asset(
+                                    LoginStrings.google,
+                                    height: 15,
+                                    width: 15,
+                                  ),
+                                  buttonColor: White.white,
+                                  titleColor: Blue.darkBlue,
+                                  buttonTitle: 'Sign in With Google',
+                                  buttonStyle: CustomButtonStyle.STYLE_TWO,
                                   onPressed: () {
-                                    BlocProvider.of<LoginBloc>(context).add(
+                                    loginBloc.add(
                                       LoginWithGooglePressed(
-                                          isGoogleSignIn: false,
-                                          email: emailController.text,
-                                          password: passwordController.text),
+                                          isGoogleSignIn: true),
                                     );
-                                  }),
-                              CustomFlatButton(
-                                marginTop: 10,
-                                leadingIcon: Image.asset(
-                                  LoginStrings.google,
-                                  height: 15,
-                                  width: 15,
+                                  },
                                 ),
-                                buttonColor: White.white,
-                                titleColor: Blue.darkBlue,
-                                buttonTitle: 'Sign in With Google',
-                                buttonStyle: CustomButtonStyle.STYLE_TWO,
-                                onPressed: () {
-                                  loginBloc.add(
-                                    LoginWithGooglePressed(
-                                        isGoogleSignIn: true),
-                                  );
-                                },
                               )
                             ],
                           ),
