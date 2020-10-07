@@ -131,7 +131,6 @@ class _DashboardState extends State<Dashboard> {
               if (state is DataLoaded) {
                 username = state.displayName;
                 imageUrl = state.photo;
-                print('USERNAME : $username, IMAGE : $imageUrl');
               }
             },
             builder: (context, state) {
@@ -236,21 +235,26 @@ class _DashboardState extends State<Dashboard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        MouseRegion(
-                          onHover: (event) {
-                            textHover = true;
+                        GestureDetector(
+                          onTap: () {
+                            print('CLICK');
                           },
-                          onExit: (event) => textHover = false,
-                          cursor: SystemMouseCursors.click,
-                          child: FittedBox(
-                            child: Text(
-                              'Edit Your Profile',
-                              style: PxText.contentText.copyWith(
-                                  color: textHover
-                                      ? Blue.lightNavy
-                                      : Black.lightBlack,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600),
+                          child: MouseRegion(
+                            onHover: (event) {
+                              textHover = true;
+                            },
+                            onExit: (event) => textHover = false,
+                            cursor: SystemMouseCursors.click,
+                            child: FittedBox(
+                              child: Text(
+                                'Edit Your Profile',
+                                style: PxText.contentText.copyWith(
+                                    color: textHover
+                                        ? Blue.lightNavy
+                                        : Black.lightBlack,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                           ),
                         ),

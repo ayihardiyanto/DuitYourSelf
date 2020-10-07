@@ -32,8 +32,6 @@ class TopRightWidget extends StatelessWidget {
     final respImageHi = imageHeight < 28 ? 28 : imageHeight;
     final respIcon = iconSize < 25 ? 25 : iconSize;
 
-    print('IMAGE $imageUrl $username');
-
     return Padding(
       padding: EdgeInsets.only(right: width * 0.05, left: width * 0.02),
       child: Row(
