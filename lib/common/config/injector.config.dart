@@ -10,6 +10,7 @@ import 'package:injectable/injectable.dart';
 import '../../presentation/screens/dashboard/bloc/app_bar_bloc/app_bar_bloc.dart';
 import '../../presentation/screens/login/bloc/authentication/authentication_bloc.dart';
 import '../network/cloud_function.dart';
+import '../../presentation/screens/dashboard/bloc/dashboard_bloc/dashboard_bloc.dart';
 import '../../presentation/screens/login/bloc/login/login_bloc.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../../data/repositories/user_repository.dart';
@@ -29,6 +30,8 @@ GetIt $initGetIt(
   gh.factory<UserUsecase>(() => UserUsecase(get<UserRepository>()));
   gh.factory<AppBarBloc>(() => AppBarBloc(userUsecase: get<UserUsecase>()));
   gh.factory<AuthenticationBloc>(() => AuthenticationBloc(get<UserUsecase>()));
+  gh.factory<DashboardBloc>(
+      () => DashboardBloc(userUsecase: get<UserUsecase>()));
   gh.factory<LoginBloc>(() => LoginBloc(get<UserUsecase>()));
   return get;
 }

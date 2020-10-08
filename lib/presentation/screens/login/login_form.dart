@@ -108,11 +108,13 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Image.asset(
-                            LoginStrings.hazardIcon,
-                            color: Red.blush,
-                            height: height * 0.25,
-                            width: width * 0.25,
+                          Expanded(
+                                                      child: Image.asset(
+                              LoginStrings.hazardIcon,
+                              color: Red.blush,
+                              height: height * 0.25,
+                              width: width * 0.25,
+                            ),
                           ),
                           Text(
                             'It seem that we can\'t find you on Google',

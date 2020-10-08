@@ -34,12 +34,14 @@ class SignUpForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     print('email : $validEmail, pass: $validPass, confPass: $validConfPass');
     return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
+      // physics: ClampingScrollPhysics(),
       child: Center(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+          padding: EdgeInsets.only(left: width * 0.05, right: width * 0.05, bottom: height * 0.03 ),
+          margin: EdgeInsets.only(bottom: height * 0.3 ),
           child: Column(
             children: [
               Text(
@@ -167,7 +169,7 @@ class SignUpForm extends StatelessWidget {
                 autoValidate: true,
                 validator: (String text) {
                   if (text.isNotEmpty && text != passwordController.text) {
-                    return 'Password doesn\'t match';
+                    return 'Password isn\'t match';
                   }
                   return null;
                 },

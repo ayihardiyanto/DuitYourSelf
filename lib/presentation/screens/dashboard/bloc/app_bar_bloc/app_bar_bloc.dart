@@ -28,7 +28,10 @@ class AppBarBloc extends Bloc<AppBarEvent, AppBarState> {
         final data = await userUsecase.getData();
         final name = jsonDecode(data)['name'];
         final photo = jsonDecode(data)['imageUrl'];
-        yield DataLoaded(displayName: name, photo: photo);
+        final selfDesc = jsonDecode(data)['selfDescription'];
+        final headline = jsonDecode(data)['headline'];
+        yield DataLoaded(
+            displayName: name, photo: photo, selfDescription: selfDesc, headline: headline);
       } catch (_) {
         yield DataFailedToLoad();
       }

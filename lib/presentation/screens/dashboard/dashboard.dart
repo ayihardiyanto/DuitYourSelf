@@ -1,10 +1,14 @@
 import 'dart:async';
 
 import 'package:duit_yourself/presentation/screens/dashboard/bloc/app_bar_bloc/app_bar_bloc.dart';
+import 'package:duit_yourself/presentation/screens/dashboard/bloc/dashboard_bloc/dashboard_bloc.dart';
+import 'package:duit_yourself/presentation/screens/dashboard/base_layout.dart';
+import 'package:duit_yourself/presentation/screens/dashboard/dashboard_string.dart';
+import 'package:duit_yourself/presentation/screens/dashboard/profile/profile_edit.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/top_right_widget.dart';
 import 'package:duit_yourself/presentation/screens/login/bloc/authentication/authentication_bloc.dart';
 import 'package:duit_yourself/presentation/themes/color_theme.dart';
-import 'package:duit_yourself/presentation/themes/px_text.dart';
+// import 'package:duit_yourself/presentation/themes/px_text.dart';
 import 'package:duit_yourself/presentation/widgets/custom_button_widget/custom_flat_button.dart';
 import 'package:duit_yourself/presentation/widgets/custom_text_form_field/textfield_duit.dart';
 import 'package:flutter/material.dart';
@@ -27,110 +31,132 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   bool isProfileMenu = false;
   bool isHoldHover = false;
   bool textHover = false;
+  bool isProfile = false;
   Timer timer;
   TextEditingController searchController = TextEditingController();
   AppBarBloc appBarBloc;
   AuthenticationBloc authenticationBloc;
+  TabController profileTab;
+  DashboardBloc dashboardBloc;
   String username = '';
   String imageUrl = '';
+  String headline = '';
+  AnimationController controller;
+  Animation<Offset> offset;
 
   void onHoverProfile(bool showMenus) {
-    setState(() {
-      isProfileMenu = showMenus;
-      isHoldHover = showMenus;
-    });
+    // if (!isProfile) {
+    //   setState(() {
+    //     isProfileMenu = showMenus;
+    //     isHoldHover = showMenus;
+    //   });
+    // }
   }
+
+  final dashboardKey = GlobalKey<_DashboardState>();
 
   @override
   void initState() {
     super.initState();
     appBarBloc = BlocProvider.of<AppBarBloc>(context);
     appBarBloc.add(GetUserData());
+    profileTab = TabController(length: 1, vsync: this);
+    dashboardBloc = BlocProvider.of<DashboardBloc>(context);
+    authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+    controller =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
+
+    offset = Tween<Offset>(begin: Offset.zero, end: Offset(0.0, 1.0))
+        .animate(controller);
   }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final dropdownW = width * 0.14;
-    final respPosDDW = dropdownW > 190 ? 190 : dropdownW;
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   setState(() {
-    //     widget.imageUrl.trim();
-    //   });
-    // });
+    // final dropdownW = width * 0.14;
+    // final respPosDDW = dropdownW > 190 ? 190 : dropdownW;
 
     return Scaffold(
+      backgroundColor: White.smokeWhite,
       appBar: AppBar(
-        // leading:
-        // leadingWidth: MediaQuery.of(context).size.width,
+        key: dashboardKey,
         automaticallyImplyLeading: false,
         actions: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: width * 0.02, vertical: height * 0.01),
-            child: Text(
-              'DuitYourself',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
-                color: Yellow.mangoYellow,
-                fontSize: 30,
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.02, vertical: height * 0.01),
+              child: GestureDetector(
+                onTap: () {
+                  dashboardBloc.add(Home());
+                },
+                child: Text(
+                  'DuitYourself',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    color: Yellow.mangoYellow,
+                    fontSize: 30,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
               ),
-              textAlign: TextAlign.left,
             ),
           ),
           Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    width: width * 0.5,
-                    child: TextFieldDuit(
-                      controller: searchController,
-                      hintText: 'Find Opportunity',
-                      fillColor: Grey.brightGrey,
-                      borderColor: Grey.greyedText,
-                      focusedBorderColor: Black.black,
-                      prefixIcon: IconButton(
-                        icon: Icon(Icons.search),
-                        color: Blue.lightNavy,
-                        onPressed: () {},
+            child: !isProfile
+                ? Container()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Container(
+                          width: 500,
+                          child: TextFieldDuit(
+                            border: OutlineInputBorder(),
+                            controller: searchController,
+                            hintText: 'Find Opportunity',
+                            fillColor: Grey.brightGrey,
+                            borderColor: Grey.greyedText,
+                            focusedBorderColor: Black.black,
+                            prefixIcon: IconButton(
+                              icon: Icon(Icons.search),
+                              color: Blue.lightNavy,
+                              onPressed: () {},
+                            ),
+                            suffixIcon: searchController.text.isEmpty
+                                ? null
+                                : IconButton(
+                                    icon: Icon(
+                                      Icons.clear,
+                                      color: Blue.lightNavy,
+                                    ),
+                                    onPressed: () {
+                                      searchController.clear();
+                                    }),
+                          ),
+                        ),
                       ),
-                      suffixIcon: searchController.text.isEmpty
-                          ? null
-                          : IconButton(
-                              icon: Icon(
-                                Icons.clear,
-                                color: Blue.lightNavy,
-                              ),
-                              onPressed: () {
-                                searchController.clear();
-                              }),
-                    ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 9, 9, 9),
+                        child: CustomFlatButton(
+                            width: 20, buttonTitle: 'Search', onPressed: () {}),
+                      )
+                    ],
                   ),
-                ),
-                Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(0, 9, 9, 9),
-                      child: CustomFlatButton(
-                          buttonTitle: 'Search', onPressed: () {}),
-                    ))
-              ],
-            ),
           ),
           BlocConsumer<AppBarBloc, AppBarState>(
             listener: (context, state) {
               if (state is DataLoaded) {
                 username = state.displayName;
                 imageUrl = state.photo;
+                headline = state.headline;
               }
             },
             builder: (context, state) {
@@ -146,8 +172,27 @@ class _DashboardState extends State<Dashboard> {
                 isShimmer: false,
                 imageUrl: imageUrl == '' ? null : imageUrl,
                 isInitialUser: widget.isInitialUser,
-                username: widget.username,
-                onHoverProfile: onHoverProfile,
+                username: username,
+                headline: headline,
+                onHoverProfile: () {
+                  dashboardBloc.add(
+                    OpenProfile(
+                      name: username,
+                      image: Container(
+                        width: width * 0.25,
+                        height: height * 0.5,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: imageUrl == null
+                                ? AssetImage(DashboardString.profileDefault)
+                                : NetworkImage(imageUrl),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
               );
             },
           ),
@@ -155,115 +200,107 @@ class _DashboardState extends State<Dashboard> {
       ),
       body: Stack(
         children: [
-          MouseRegion(
-            onHover: (event) => onHoverProfile(false),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: width * 0.02,
-                      top: height * 0.02,
-                      right: width * 0.01,
-                      bottom: height * 0.02,
-                    ),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            width: width,
-                            height: height,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: White.smokeWhite,
-                            ),
-                            child: Text(''),
-                          ),
-                        ),
-                      ],
-                    ),
+          BlocBuilder<DashboardBloc, DashboardState>(
+            builder: (context, state) {
+              if (state is ProfileLoaded) {
+                isProfile = true;
+                return SlideTransition(
+                  position: offset,
+                  child: ProfileEdit(
+                    bloc: appBarBloc,
+                    dashboardBloc: dashboardBloc,
+                    arguments: onHoverProfile,
+                    image: imageUrl == null || imageUrl == ''
+                        ? AssetImage(DashboardString.profileDefault)
+                        : NetworkImage(imageUrl),
                   ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: width * 0.005,
-                      top: height * 0.02,
-                      right: width * 0.01,
-                      bottom: height * 0.02,
-                    ),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            width: width,
-                            height: height,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: White.smokeWhite,
-                            ),
-                            child: Text(''),
-                          ),
-                        ),
-                      ],
-                    ),
+                );
+              }
+              if (state is SavingProfile) {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  child: Center(
+                    child: CircularProgressIndicator(),
                   ),
+                );
+              }
+              if (state is ProfileSaved) {
+                appBarBloc.add(GetUserData());
+              }
+              if (state is ToHome) {
+                isProfile = false;
+                return BaseLayout(
+                  leftColumn: Container(
+                    color: White.white,
+                  ),
+                  rightColumn: Container(
+                    color: White.white,
+                  ),
+                  arguments: onHoverProfile,
+                );
+              }
+              return BaseLayout(
+                leftColumn: Container(
+                  color: White.white,
                 ),
-              ],
-            ),
+                rightColumn: Container(
+                  color: White.white,
+                ),
+                arguments: onHoverProfile,
+              );
+            },
           ),
-          if (isProfileMenu)
-            Positioned(
-              right: respPosDDW,
-              child: MouseRegion(
-                onHover: (event) {
-                  onHoverProfile(true);
-                },
-                onExit: (event) {
-                  onHoverProfile(false);
-                },
-                child: Card(
-                  elevation: 5,
-                  child: AnimatedContainer(
-                    duration: Duration(seconds: 1),
-                    curve: Curves.slowMiddle,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    color: Colors.white,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            print('CLICK');
-                          },
-                          child: MouseRegion(
-                            onHover: (event) {
-                              textHover = true;
-                            },
-                            onExit: (event) => textHover = false,
-                            cursor: SystemMouseCursors.click,
-                            child: FittedBox(
-                              child: Text(
-                                'Edit Your Profile',
-                                style: PxText.contentText.copyWith(
-                                    color: textHover
-                                        ? Blue.lightNavy
-                                        : Black.lightBlack,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
+          // if (isProfileMenu)
+          //   Positioned(
+          //     right: respPosDDW,
+          //     child: MouseRegion(
+          //       onHover: (event) {
+          //         onHoverProfile(true);
+          //       },
+          //       onExit: (event) {
+          //         onHoverProfile(false);
+          //       },
+          //       child: Card(
+          //         elevation: 5,
+          //         child: AnimatedContainer(
+          //           duration: Duration(seconds: 1),
+          //           curve: Curves.slowMiddle,
+          //           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          //           color: Colors.white,
+          //           child: Column(
+          //             crossAxisAlignment: CrossAxisAlignment.start,
+          //             mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //             children: [
+          //               GestureDetector(
+          //                 onTap: () {
+
+          //                 },
+          //                 child: MouseRegion(
+          //                   onHover: (event) {
+          //                     textHover = true;
+          //                   },
+          //                   onExit: (event) => textHover = false,
+          //                   cursor: SystemMouseCursors.click,
+          //                   child: FittedBox(
+          //                     child: Text(
+          //                       'Edit Your Profile',
+          //                       style: PxText.contentText.copyWith(
+          //                           color: textHover
+          //                               ? Blue.lightNavy
+          //                               : Black.lightBlack,
+          //                           fontSize: 15,
+          //                           fontWeight: FontWeight.w600),
+          //                     ),
+          //                   ),
+          //                 ),
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
         ],
       ),
     );

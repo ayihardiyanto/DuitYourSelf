@@ -11,6 +11,7 @@ class TopRightWidget extends StatelessWidget {
   final String username;
   final Function onHoverProfile;
   final bool isShimmer;
+  final String headline;
 
   const TopRightWidget({
     Key key,
@@ -18,7 +19,7 @@ class TopRightWidget extends StatelessWidget {
     this.imageUrl,
     this.username,
     this.onHoverProfile,
-    this.isShimmer,
+    this.isShimmer, this.headline,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -38,9 +39,9 @@ class TopRightWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           MouseRegion(
-            onHover: (e) {
-              onHoverProfile(false);
-            },
+            // onHover: (e) {
+            //   onHoverProfile(false);
+            // },
             child: isShimmer
                 ? Container(
                     width: width * 0.091,
@@ -59,7 +60,8 @@ class TopRightWidget extends StatelessWidget {
                       MouseRegion(
                         cursor: SystemMouseCursors.click,
                         child: Text(
-                          'Your Headline',
+                          (headline == null || headline.isEmpty) ?
+                          'Your Headline' : headline,
                           style: PxText.contentText.copyWith(
                             color: Blue.lightNavy,
                             fontWeight: FontWeight.w500,
@@ -71,9 +73,6 @@ class TopRightWidget extends StatelessWidget {
                   ),
           ),
           MouseRegion(
-            onHover: (onHover) {
-              onHoverProfile(true);
-            },
             cursor: SystemMouseCursors.click,
             child: isShimmer
                 ? Shimmer(
@@ -84,29 +83,34 @@ class TopRightWidget extends StatelessWidget {
                           shape: BoxShape.circle,
                         )),
                   )
-                : Container(
-                    width: respImageWi,
-                    height: respImageHi,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: imageUrl == null
-                            ? AssetImage(DashboardString.profileDefault)
-                            : NetworkImage(imageUrl),
+                : GestureDetector(
+                    onTap: () {
+                      onHoverProfile();
+                    },
+                    child: Container(
+                      width: respImageWi,
+                      height: respImageHi,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: imageUrl == null
+                              ? AssetImage(DashboardString.profileDefault)
+                              : NetworkImage(imageUrl),
+                        ),
                       ),
                     ),
                   ),
           ),
           isShimmer
               ? Container(
-                width: width *0.085,
-              )
+                  width: width * 0.085,
+                )
               : Row(
                   children: [
                     MouseRegion(
-                      onHover: (e) {
-                        onHoverProfile(false);
-                      },
+                      // onHover: (e) {
+                      //   onHoverProfile(false);
+                      // },
                       child: Container(
                         child: IconButton(
                           splashColor: Colors.transparent,

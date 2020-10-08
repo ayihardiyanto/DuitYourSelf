@@ -15,10 +15,15 @@ class TextFieldDuit extends StatelessWidget {
   final Function validator;
   final Function onChange;
   final bool enabled;
+  final int maxLine;
   final InputDecoration decoration;
   final Color fillColor;
   final Color borderColor;
   final Color focusedBorderColor;
+  final double height;
+  final EdgeInsets contentPadding;
+  final EdgeInsets margin;
+  final InputBorder border;
 
   const TextFieldDuit({
     Key key,
@@ -38,17 +43,24 @@ class TextFieldDuit extends StatelessWidget {
     this.fillColor,
     this.borderColor,
     this.focusedBorderColor,
+    this.height,
+    this.contentPadding,
+    this.maxLine,
+    this.margin, this.border,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+      color: Colors.amberAccent,
+      margin: margin ?? EdgeInsets.symmetric(horizontal: 0, vertical: 10),
       child: TextFormField(
         enabled: enabled ?? true,
+        maxLines: maxLine ?? 1,
         decoration: decoration ??
             InputDecoration(
               hintText: hintText,
               labelText: labelText,
+              contentPadding: contentPadding,
               suffixIcon: suffixIcon,
               prefixIcon: prefixIcon,
               labelStyle: PxText.contentText.copyWith(
@@ -57,7 +69,7 @@ class TextFieldDuit extends StatelessWidget {
               disabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: borderColor ?? Grey.ashGrey),
               ),
-              border: OutlineInputBorder(
+              border: border ?? OutlineInputBorder(
                 borderSide: BorderSide(color: borderColor ?? Grey.ashGrey),
               ),
               hintStyle: TextStyle(color: Grey.greyedText),

@@ -1,10 +1,9 @@
 import 'dart:convert';
-import 'package:meta/meta.dart';
 
 import 'package:duit_yourself/domain/entities/user_entity.dart';
 
 class User extends UserEntity {
-  User({@required String email, @required String name, @required String photoUrl})
+  User({ String email,  String name,  String photoUrl})
       : super(email: email, name: name, photoUrl: photoUrl);
 
   factory User.fromJson(Map<String, dynamic> json) {

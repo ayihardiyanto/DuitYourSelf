@@ -12,8 +12,15 @@ abstract class AppBarState extends Equatable {
 
 class DataLoaded extends AppBarState {
   final String displayName;
+  final String selfDescription;
   final String photo;
-  const DataLoaded({this.displayName, this.photo});
+  final String headline;
+  const DataLoaded({
+    this.displayName,
+    this.photo,
+    this.selfDescription,
+    this.headline
+  });
 
   @override
   String toString() => '';
@@ -21,7 +28,6 @@ class DataLoaded extends AppBarState {
 
 class InitialAppBar extends AppBarState {}
 
-
 class GetDataLoading extends AppBarState {}
 
-class DataFailedToLoad extends AppBarState{}
+class DataFailedToLoad extends AppBarState {}
