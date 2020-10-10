@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'dart:html';
+
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +7,6 @@ import 'package:duit_yourself/common/constants/key_local_storage_constants.dart'
 import 'package:duit_yourself/domain/usecases/user_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:firebase/firebase.dart' as fb;
 import 'package:injectable/injectable.dart';
 import 'package:localstorage/localstorage.dart';

@@ -59,7 +59,7 @@ class CustomFlatButton extends StatelessWidget {
         defaultTitleColor = buttonColor;
         return [defaultBaseColor, defaultTitleColor];
       case CustomButtonStyle.STYLE_THREE:
-        defaultBaseColor = White.white;
+        defaultBaseColor = Colors.transparent;
         defaultTitleColor = Theme.of(context).primaryColor;
         return [defaultBaseColor, defaultTitleColor];
       default:

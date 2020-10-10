@@ -4,14 +4,12 @@ import 'package:duit_yourself/presentation/screens/dashboard/bloc/app_bar_bloc/a
 import 'package:duit_yourself/presentation/screens/dashboard/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/base_layout.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/dashboard_string.dart';
+import 'package:duit_yourself/presentation/screens/dashboard/left_home_screen.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/profile/profile_edit.dart';
+import 'package:duit_yourself/presentation/screens/dashboard/right_home_screen.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/top_right_widget.dart';
 import 'package:duit_yourself/presentation/screens/login/bloc/authentication/authentication_bloc.dart';
-import 'package:duit_yourself/presentation/themes/color_theme.dart';
-// import 'package:duit_yourself/presentation/themes/px_text.dart';
-import 'package:duit_yourself/presentation/widgets/custom_button_widget/custom_flat_button.dart';
-import 'package:duit_yourself/presentation/widgets/custom_text_form_field/textfield_duit.dart';
-import 'package:flutter/material.dart';
+import 'package:duit_yourself/presentation/themes/color_theme.dart';import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -67,6 +65,9 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
     profileTab = TabController(length: 1, vsync: this);
     dashboardBloc = BlocProvider.of<DashboardBloc>(context);
     authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+    searchController.addListener(() {
+      setState(() {});
+    });
     controller =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
 
@@ -109,48 +110,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
               ),
             ),
           ),
-          Expanded(
-            child: !isProfile
-                ? Container()
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: Container(
-                          width: 500,
-                          child: TextFieldDuit(
-                            border: OutlineInputBorder(),
-                            controller: searchController,
-                            hintText: 'Find Opportunity',
-                            fillColor: Grey.brightGrey,
-                            borderColor: Grey.greyedText,
-                            focusedBorderColor: Black.black,
-                            prefixIcon: IconButton(
-                              icon: Icon(Icons.search),
-                              color: Blue.lightNavy,
-                              onPressed: () {},
-                            ),
-                            suffixIcon: searchController.text.isEmpty
-                                ? null
-                                : IconButton(
-                                    icon: Icon(
-                                      Icons.clear,
-                                      color: Blue.lightNavy,
-                                    ),
-                                    onPressed: () {
-                                      searchController.clear();
-                                    }),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0, 9, 9, 9),
-                        child: CustomFlatButton(
-                            width: 20, buttonTitle: 'Search', onPressed: () {}),
-                      )
-                    ],
-                  ),
-          ),
+          Expanded(child: Container()),
           BlocConsumer<AppBarBloc, AppBarState>(
             listener: (context, state) {
               if (state is DataLoaded) {
@@ -231,21 +191,21 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
               if (state is ToHome) {
                 isProfile = false;
                 return BaseLayout(
-                  leftColumn: Container(
-                    color: White.white,
+                  leftColumn: LeftHomeScreen(
+                    searchController: searchController,
                   ),
-                  rightColumn: Container(
-                    color: White.white,
+                  rightColumn: RightHomeScreen(
+                    username: username,
                   ),
                   arguments: onHoverProfile,
                 );
               }
               return BaseLayout(
-                leftColumn: Container(
-                  color: White.white,
+                leftColumn: LeftHomeScreen(
+                  searchController: searchController,
                 ),
-                rightColumn: Container(
-                  color: White.white,
+                rightColumn: RightHomeScreen(
+                  username: username,
                 ),
                 arguments: onHoverProfile,
               );
