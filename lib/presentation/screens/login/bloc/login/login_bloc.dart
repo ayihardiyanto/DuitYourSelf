@@ -32,23 +32,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     if (event is OnSubmitSignUp) {
       yield SigningUp();
-      print(event.email);
-      print(event.password);
-      final result = await userUsecase.signUp(
-          email: event.email, password: event.password);
+      try {
+        print(event.email);
+        print(event.password);
+        final result = await userUsecase.signUp(
+            email: event.email, password: event.password);
 
-      final statusCode = jsonDecode(result)['statusCode'];
-      if (statusCode == '201') {
-        yield SignUpSuccess();
+        if (result == '201') {
+          print('SIGN SUCCESS');
+          yield SignUpSuccess();
+        }
+      } catch (e) {
+        print('SIGN UP ERROR' + e);
       }
     }
   }
 
   Stream<LoginState> _mapLoginWithGooglePressedToState(
       bool isGoogleSignIn, String email, String password) async* {
-    // if (!isGoogleSignIn) {
-      yield LoginLoading();
-    // }
+    yield LoginLoading();
     try {
       await userUsecase.signOut();
       await userUsecase.signIn(

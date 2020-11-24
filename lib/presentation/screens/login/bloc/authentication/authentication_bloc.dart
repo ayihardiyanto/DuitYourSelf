@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:duit_yourself/common/constants/key_local_storage_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:meta/meta.dart';
 import 'dart:async';
 import 'package:equatable/equatable.dart';
@@ -14,6 +17,9 @@ part 'authentication_state.dart';
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final UserUsecase _userUsecase;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final LocalStorage storage =
+      LocalStorage(KeyLocalStorageConstants.userDetail);
 
   AuthenticationBloc(this._userUsecase);
 
@@ -30,21 +36,37 @@ class AuthenticationBloc
       try {
         final isSignedIn = await _userUsecase.isSignedIn();
         if (isSignedIn) {
-          // final getRole = await _userUsecase.getRoles();
-          // if (getRole != null) {
           final data = await _userUsecase.getData();
+
           print('data : $data');
-          final name = jsonDecode(data)['name'];
-          final photo = jsonDecode(data)['imageUrl'];
-          yield* _mapLoggedInToState(name, photo);
-          // } else {
-          //   yield* _mapLoginDeniedToState();
-          // }
-        } else {
-          yield* _mapLoggedOutToState();
+          if (data != null) {
+            print('data : $data');
+            final name = jsonDecode(data)['name'];
+            final photo = jsonDecode(data)['imageUrl'];
+            yield* _mapLoggedInToState(name, photo);
+          } else {
+            final emailFromStorage = storage.getItem('email') as String;
+            final transformEmailToName = emailFromStorage.split('@')[0];
+
+            final newUserDataPayload = {
+              "email": emailFromStorage,
+              "headline": "",
+              "imageUrl": "",
+              "name": emailFromStorage.split("@")[0],
+            };
+
+            firestore
+                .collection('user')
+                .doc(emailFromStorage)
+                .set(newUserDataPayload)
+                .then((value) => print("CREATED"))
+                .catchError((e) => print("ERROR $e"));
+
+            yield* _mapLoggedInToState(transformEmailToName, '');
+          }
         }
       } catch (e) {
-          print('error $e');
+        print('error $e');
         yield* _mapLoginDeniedToState();
       }
     } else if (event is LoggedOut) {

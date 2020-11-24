@@ -128,11 +128,6 @@ class UserRepositoryImpl implements UserRepository {
   Future<String> getData() async {
     try {
       var result;
-      // = await http.post(
-      //   '$_baseUrl/get-user-by-email',
-      //   body: {'email': storage.getItem('email')},
-      // );
-
       await firestore
           .collection('user')
           .doc(storage.getItem('email'))
@@ -144,10 +139,13 @@ class UserRepositoryImpl implements UserRepository {
           result = value.data();
         }
       });
-      String username = result['name'];
-      var key = KeyLocalStorageConstants.username;
-      await saveToLocalStorage(key, username);
-      return jsonEncode(result);
+      if (result != null) {
+        String username = result['name'];
+        var key = KeyLocalStorageConstants.username;
+        await saveToLocalStorage(key, username);
+        return jsonEncode(result);
+      }
+      return result;
     } catch (error) {
       throw 'error : $error';
     }
@@ -174,13 +172,27 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<String> signUp({String email, String password}) async {
-    final result = await http.post(
-      '$_baseUrl/create-user',
-      body: {
-        'email': email,
-        'password': password,
-      },
-    );
-    return result.body;
+    final result = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    print('IS NEW ACCOUNT, ${result.additionalUserInfo.isNewUser}');
+    final newUserDataPayload = {
+      "email": email,
+      "headline": "",
+      "imageUrl": "",
+      "name": email.split("@")[0],
+    };
+
+    print("NEW PAYLOAD $newUserDataPayload");
+
+    if (result.additionalUserInfo.isNewUser) {
+      firestore
+          .collection('user')
+          .doc(email)
+          .set(newUserDataPayload)
+          .then((value) => print("CREATED"))
+          .catchError((e) => print("ERROR $e"));
+      return '201';
+    }
+    return '400';
   }
 }
