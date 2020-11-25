@@ -46,7 +46,6 @@ class RouteGenerator {
       fluro.Handler(handlerFunc: (context, parameters) {
     final name = parameters['displayName'][0];
     final imageUrl = parameters['imageUrl'][0];
-    print('$parameters , $name and ${imageUrl.isEmpty}');
     return MultiBlocProvider(
       providers: [
         BlocProvider(

@@ -6,8 +6,9 @@ import 'package:flutter/rendering.dart';
 
 class RightHomeScreen extends StatelessWidget {
   final String username;
+  final Function toPostJobScreen;
 
-  const RightHomeScreen({Key key, this.username}) : super(key: key);
+  const RightHomeScreen({Key key, this.username, this.toPostJobScreen}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,7 +48,7 @@ class RightHomeScreen extends StatelessWidget {
                     titleColor: Yellow.mangoYellow,
                     height: 35,
                     width: 100,
-                    onPressed: () {},
+                    onPressed: toPostJobScreen,
                   ),
                 ],
               ),
@@ -65,7 +66,7 @@ class RightHomeScreen extends StatelessWidget {
                     cursor: SystemMouseCursors.click,
                     child: ListTile(
                       title: Text(
-                        'See Requested Jobs',
+                        'See Posted Jobs',
                         textAlign: TextAlign.center,
                       ),
                     ),

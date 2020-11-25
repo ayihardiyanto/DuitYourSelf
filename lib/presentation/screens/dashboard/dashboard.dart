@@ -1,15 +1,19 @@
 import 'dart:async';
 
+import 'package:duit_yourself/common/config/injector.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/bloc/app_bar_bloc/app_bar_bloc.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/base_layout.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/dashboard_string.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/left_home_screen.dart';
+import 'package:duit_yourself/presentation/screens/job_posting/bloc/job_posting_bloc.dart';
+import 'package:duit_yourself/presentation/screens/job_posting/editable_job_screen.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/profile/profile_edit.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/right_home_screen.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/top_right_widget.dart';
 import 'package:duit_yourself/presentation/screens/login/bloc/authentication/authentication_bloc.dart';
-import 'package:duit_yourself/presentation/themes/color_theme.dart';import 'package:flutter/material.dart';
+import 'package:duit_yourself/presentation/themes/color_theme.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -188,6 +192,16 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
               if (state is ProfileSaved) {
                 appBarBloc.add(GetUserData());
               }
+
+              if (state is ToPostJobScreen) {
+                return MultiBlocProvider(
+                  child: EditableJobScreen(),
+                  providers: [
+                    BlocProvider.value(value: getIt<JobPostBloc>()),
+                    BlocProvider.value(value: dashboardBloc)
+                  ],
+                );
+              }
               if (state is ToHome) {
                 isProfile = false;
                 return BaseLayout(
@@ -196,6 +210,9 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                   ),
                   rightColumn: RightHomeScreen(
                     username: username,
+                    toPostJobScreen: () {
+                      dashboardBloc.add(OnPostJobTapped());
+                    },
                   ),
                   arguments: onHoverProfile,
                 );
@@ -204,63 +221,23 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                 leftColumn: LeftHomeScreen(
                   searchController: searchController,
                 ),
-                rightColumn: RightHomeScreen(
-                  username: username,
-                ),
+                rightColumn: BlocConsumer<AppBarBloc, AppBarState>(
+                    listener: (context, state) {
+                  if (state is ProfileLoaded) {
+                    username = state.displayName;
+                  }
+                }, builder: (context, state) {
+                  return RightHomeScreen(
+                    username: username,
+                    toPostJobScreen: () {
+                      dashboardBloc.add(OnPostJobTapped());
+                    },
+                  );
+                }),
                 arguments: onHoverProfile,
               );
             },
           ),
-          // if (isProfileMenu)
-          //   Positioned(
-          //     right: respPosDDW,
-          //     child: MouseRegion(
-          //       onHover: (event) {
-          //         onHoverProfile(true);
-          //       },
-          //       onExit: (event) {
-          //         onHoverProfile(false);
-          //       },
-          //       child: Card(
-          //         elevation: 5,
-          //         child: AnimatedContainer(
-          //           duration: Duration(seconds: 1),
-          //           curve: Curves.slowMiddle,
-          //           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          //           color: Colors.white,
-          //           child: Column(
-          //             crossAxisAlignment: CrossAxisAlignment.start,
-          //             mainAxisAlignment: MainAxisAlignment.spaceAround,
-          //             children: [
-          //               GestureDetector(
-          //                 onTap: () {
-
-          //                 },
-          //                 child: MouseRegion(
-          //                   onHover: (event) {
-          //                     textHover = true;
-          //                   },
-          //                   onExit: (event) => textHover = false,
-          //                   cursor: SystemMouseCursors.click,
-          //                   child: FittedBox(
-          //                     child: Text(
-          //                       'Edit Your Profile',
-          //                       style: PxText.contentText.copyWith(
-          //                           color: textHover
-          //                               ? Blue.lightNavy
-          //                               : Black.lightBlack,
-          //                           fontSize: 15,
-          //                           fontWeight: FontWeight.w600),
-          //                     ),
-          //                   ),
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
         ],
       ),
     );

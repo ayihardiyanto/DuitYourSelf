@@ -22,5 +22,6 @@ class ProfileFailed extends DashboardState {}
 class ToHome extends DashboardState {}
 class ProfileSaved extends DashboardState {}
 class SavingProfile extends DashboardState {}
+class ToPostJobScreen extends DashboardState{}
 
 

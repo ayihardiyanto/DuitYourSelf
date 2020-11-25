@@ -37,3 +37,13 @@ class SaveProfile extends DashboardEvent {
   @override
   List<Object> get props => [username, selfDescription, profile, headline];
 }
+
+class OnPostJobTapped extends DashboardEvent {
+  @override
+  String toString() => 'PostJob';
+
+  @override
+  List<Object> get props => [];
+}
+
+

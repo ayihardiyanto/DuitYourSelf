@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:duit_yourself/presentation/screens/dashboard/base_layout.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/bloc/app_bar_bloc/app_bar_bloc.dart';
 import 'package:duit_yourself/presentation/screens/dashboard/bloc/dashboard_bloc/dashboard_bloc.dart';
-import 'package:duit_yourself/presentation/screens/dashboard/profile/personal_information_tab.dart';
+import 'package:duit_yourself/presentation/screens/dashboard/profile/general_form_layout.dart';
 // import 'package:duit_yourself/presentation/screens/login/bloc/authentication/authentication_bloc.dart';
 import 'package:duit_yourself/presentation/themes/color_theme.dart';
 import 'package:duit_yourself/presentation/themes/px_text.dart';
@@ -118,7 +118,7 @@ class _ProfileEditState extends State<ProfileEdit>
 
   @override
   Widget build(BuildContext context) {
-    print('IMAGE ${widget.image}');
+    // print('IMAGE ${widget.image}');
     return Center(
       child: Container(
         width: 1280,
@@ -260,17 +260,19 @@ class _ProfileEditState extends State<ProfileEdit>
                       },
                       builder: (context, state) {
                         if (state is GetDataLoading) {
-                          return PersonalInformation(
-                            nameController: nameController,
+                          return GeneralFormLayout(
+                            normalSizeController1: nameController,
+                            isButtonEnabled: nameController.text.isNotEmpty,
                             isShimmer: true,
                             render: render,
-                            headline: headline,
-                            selfDescriptionControler: selfDescriptionControler,
+                            normalSizeController2: headline,
+                            mediumSizeController1: selfDescriptionControler,
                           );
                         }
-                        return PersonalInformation(
-                          nameController: nameController,
-                          headline: headline,
+                        return GeneralFormLayout(
+                          normalSizeController1: nameController,
+                          normalSizeController2: headline,
+                            isButtonEnabled: nameController.text.isNotEmpty,
                           isShimmer: false,
                           render: render,
                           onSave: () {
@@ -283,7 +285,7 @@ class _ProfileEditState extends State<ProfileEdit>
                           onCancel: () {
                             widget.dashboardBloc.add(Home());
                           },
-                          selfDescriptionControler: selfDescriptionControler,
+                          mediumSizeController1: selfDescriptionControler,
                         );
                       },
                     )),

@@ -1,4 +1,5 @@
-
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -43,6 +44,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       yield ToHome();
     }
 
+    if (event is OnPostJobTapped) {
+      yield ToPostJobScreen();
+    }
+
     if (event is SaveProfile) {
       try {
         final username = event.username;
@@ -50,32 +55,46 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         final desc = event.selfDescription;
         final headline = event.headline;
         final email = storage.getItem('email');
+        var payload = {
+          'name': username,
+          'selfDescription': desc,
+          'headline': headline,
+        };
         var imageUri;
         if (photo != null) {
-          if (photo.runtimeType == Image) {
-            await firestore.collection('user').doc(email).update({
-              'name': username,
-              'profile image': '',
-              'selfDescription': desc,
-              'headline': headline,
-            });
+          print('PHOTO RUNTIME ${photo.runtimeType}');
+          if (photo.runtimeType != File) {
+            print('MASUK IF');
+            print('PARAM $payload');
+            await firestore.collection('user').doc(email).update(payload);
           } else {
-            fb.StorageReference _storage = fb
-                .storage()
-                .ref('duityourself/profilepicture/$email/$username.jpeg');
-            fb.UploadTaskSnapshot uploadTaskSnapshot =
-                await _storage.put(photo).future;
+            print('MASUK ELSE');
+            print('PARAM $payload');
 
-            imageUri = await uploadTaskSnapshot.ref.getDownloadURL();
+            print('PHOTO $photo');
+            if (photo.runtimeType == File){
+              print('MASUK SUB IF');
+              fb.StorageReference _storage = fb
+                  .storage()
+                  .ref('duityourself/profilepicture/$email/$username.jpeg');
+
+              print('STORAGE $_storage');
+              fb.UploadTaskSnapshot uploadTaskSnapshot =
+                  await _storage.put(photo).future;
+
+              print('SNAPSHOT $uploadTaskSnapshot');
+
+              imageUri = await uploadTaskSnapshot.ref.getDownloadURL();
+            }
             print('URL: $imageUri');
             final imagUriString = imageUri != null ? imageUri.toString() : '';
-            await firestore.collection('user').doc(email).update({
-              'name': username,
-              'profile image': '',
-              'selfDescription': desc,
-              'headline': headline,
-              'imageUrl': imagUriString
-            });
+            payload['imageUrl'] = imagUriString;
+            await firestore
+                .collection('user')
+                .doc(email)
+                .update(payload)
+                .then((value) => "SUCCESS")
+                .catchError((e) => print('ERROR di catch $e'));
           }
         }
         yield ProfileSaved();

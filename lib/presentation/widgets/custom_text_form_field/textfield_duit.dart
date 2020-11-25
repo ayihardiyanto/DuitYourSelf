@@ -1,6 +1,7 @@
 import 'package:duit_yourself/presentation/themes/color_theme.dart';
 import 'package:duit_yourself/presentation/themes/px_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TextFieldDuit extends StatelessWidget {
   final TextEditingController controller;
@@ -24,6 +25,7 @@ class TextFieldDuit extends StatelessWidget {
   final EdgeInsets contentPadding;
   final EdgeInsets margin;
   final InputBorder border;
+  final List<TextInputFormatter> inputFormatters;
 
   const TextFieldDuit({
     Key key,
@@ -46,7 +48,7 @@ class TextFieldDuit extends StatelessWidget {
     this.height,
     this.contentPadding,
     this.maxLine,
-    this.margin, this.border,
+    this.margin, this.border, this.inputFormatters,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -85,6 +87,7 @@ class TextFieldDuit extends StatelessWidget {
             ),
         focusNode: focusNode,
         autovalidate: autoValidate ?? true,
+        inputFormatters: inputFormatters,
         obscureText: obscureText ?? false,
         controller: controller,
         validator: validator,

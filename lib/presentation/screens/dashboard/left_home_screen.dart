@@ -1,3 +1,4 @@
+import 'package:duit_yourself/presentation/screens/dashboard/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:duit_yourself/presentation/themes/color_theme.dart';
 import 'package:duit_yourself/presentation/themes/px_text.dart';
 import 'package:duit_yourself/presentation/widgets/custom_button_widget/custom_flat_button.dart';
@@ -6,10 +7,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-class LeftHomeScreen extends StatelessWidget {
+class LeftHomeScreen extends StatefulWidget {
   final TextEditingController searchController;
+  final DashboardBloc bloc;
 
-  const LeftHomeScreen({Key key, this.searchController}) : super(key: key);
+  const LeftHomeScreen({Key key, this.searchController, this.bloc}) : super(key: key);
+
+  @override
+  _LeftHomeScreenState createState() => _LeftHomeScreenState();
+}
+
+class _LeftHomeScreenState extends State<LeftHomeScreen> {
   @override
   Widget build(BuildContext context) {
     // final height = MediaQuery.of(context).size.height;
@@ -28,7 +36,7 @@ class LeftHomeScreen extends StatelessWidget {
                   width: 500,
                   child: TextFieldDuit(
                     border: OutlineInputBorder(),
-                    controller: searchController,
+                    controller: widget.searchController,
                     hintText: 'Find Opportunity',
                     fillColor: Grey.brightGrey,
                     borderColor: Grey.greyedText,
@@ -38,7 +46,7 @@ class LeftHomeScreen extends StatelessWidget {
                       color: Blue.lightNavy,
                       onPressed: () {},
                     ),
-                    suffixIcon: searchController.text.isEmpty
+                    suffixIcon: widget.searchController.text.isEmpty
                         ? null
                         : IconButton(
                             icon: Icon(
@@ -46,7 +54,7 @@ class LeftHomeScreen extends StatelessWidget {
                               color: Blue.lightNavy,
                             ),
                             onPressed: () {
-                              searchController.clear();
+                              widget.searchController.clear();
                             }),
                   ),
                 ),
@@ -78,15 +86,7 @@ class LeftHomeScreen extends StatelessWidget {
           color: White.white,
           child: Center(
             child: ListView.builder(
-              // gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-              //   crossAxisCount: 4,
-              //   childAspectRatio: 1,
-              //   crossAxisSpacing: 5,
-              //   mainAxisSpacing: 5,
-
-              // ),
               scrollDirection: Axis.horizontal,
-
               padding: EdgeInsets.all(5),
               itemCount: 16,
               itemBuilder: (context, index) {
@@ -106,36 +106,6 @@ class LeftHomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        // Container(
-        //   padding: EdgeInsets.all(10),
-        //   width: double.maxFinite,
-        //   color: White.white,
-        //   child: Text(
-        //     'Recently Posted',
-        //     style: PxText.popUpTitle.copyWith(
-        //       color: Black.lightBlack,
-        //     ),
-        //   ),
-        // ),
-        // SizedBox(
-        //   height: 1,
-        // ),
-        // Wrap(
-        //   children: 
-        //     List.generate(
-        //       15,
-        //        (index) {
-        //         return Container(
-        //           margin: EdgeInsets.all(8),
-        //           decoration: BoxDecoration(
-        //               border: Border.all(color: Colors.blueAccent)),
-        //           width: 200,
-        //           height: 500,
-        //         );
-        //       },
-        //     ),
-          
-        // )
       ],
     );
   }
